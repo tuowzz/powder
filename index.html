@@ -95,6 +95,7 @@
     .badge{display:inline-flex;align-items:center;gap:6px;background:#fff1f2;color:#e11d48;border:1px solid #fecdd3;font-weight:1000;border-radius:999px;padding:6px 10px;font-size:.9rem;margin-bottom:8px}
     .prodTitle{font-size:1.14rem;line-height:1.45;font-weight:900;margin:0}.subTitle{margin:8px 0 0;color:#4b5563;font-size:.98rem;line-height:1.45}.metaRow{margin-top:9px;display:flex;gap:9px;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:.91rem}.stars{color:#fbbf24}.sep{opacity:.35}
     .gallery img,.main-img{width:100%;max-width:390px;display:block;margin:0 auto;border-radius:12px;border:1px solid var(--border);box-shadow:0 2px 12px rgba(0,0,0,.06)}
+    .video{text-align:center}.video video{width:100%;max-width:390px;border-radius:12px;border:1px solid var(--border);box-shadow:0 2px 12px rgba(0,0,0,.06);background:#000}.video .caption{font-size:.93rem;color:#9ca3af;margin-top:8px}
     .placeholder{height:350px;border-radius:16px;background:radial-gradient(circle at 50% 30%,#ffe0d6 0,#fff6f2 38%,#fff 70%);border:1px solid #fed7cc;display:flex;align-items:center;justify-content:center;text-align:center;padding:22px;color:#7c2d12;font-weight:1000;font-size:1.35rem;line-height:1.35}.placeholder small{display:block;margin-top:10px;font-size:.95rem;color:#9a3412;font-weight:700}
     .priceRow{margin-top:12px;display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap}.now{color:var(--primary);font-size:2.15rem;font-weight:1000;line-height:1}.now small{font-size:1.1rem}.was{color:#9ca3af;text-decoration:line-through;font-size:1.05rem}.off{background:#fff1f2;color:#e11d48;border:1px solid #fecdd3;font-weight:1000;border-radius:8px;padding:5px 8px;font-size:.9rem}
     .voucherRow{margin-top:12px;display:flex;gap:10px;align-items:flex-start}.vLeft{color:var(--muted);font-weight:800;font-size:.92rem;width:72px;flex:0 0 auto;padding-top:2px}.vItems{flex:1;display:flex;gap:8px;flex-wrap:wrap}.voucher{border:1px dashed #f59e0b;background:#fff7ed;color:#b45309;font-weight:1000;border-radius:10px;padding:7px 10px;font-size:.9rem;display:inline-flex;gap:7px;align-items:center}
@@ -142,8 +143,24 @@
       </div>
     </section>
 
-    <section class="card">
-      <div class="placeholder">M-BLITHE<br>แป้งพัฟผสมรองพื้น<small>วางรูปสินค้าไฟล์จริงตรงนี้ได้ เช่น powder.jpg</small></div>
+    <section class="card gallery">
+      <img src="photo_2026-06-13_12-09-43.jpg" alt="แป้งพัฟผสมรองพื้น M-BLITHE หน้าเนียน คุมมัน กันเยิ้ม 12 ชม.">
+    </section>
+
+    <section class="card video">
+      <video autoplay muted loop playsinline controls>
+        <source src="SaveTik.co_7219575340723719450.mp4" type="video/mp4">
+        ไม่สามารถเล่นวิดีโอนี้ได้
+      </video>
+      <div class="caption">คลิปรีวิวแป้งพัฟผสมรองพื้น M-BLITHE</div>
+    </section>
+
+    <section class="card video">
+      <video autoplay muted loop playsinline controls>
+        <source src="SaveTik.co_7164061548145544475.mp4" type="video/mp4">
+        ไม่สามารถเล่นวิดีโอนี้ได้
+      </video>
+      <div class="caption">คลิปแนะนำสินค้าและงานผิวหลังใช้</div>
     </section>
 
     <div class="hash">#แป้งพัฟผสมรองพื้น #แป้งหน้าเนียน #แป้งคุมมัน #C21ผิวขาวเหลือง #C22ผิวสองสี #Mblithe</div>
@@ -263,13 +280,7 @@
     const img = new Image(); img.referrerPolicy = 'no-referrer-when-downgrade'; img.src = `${PROPELLER_CONV_BASE}?${params.toString()}&ts=${Date.now()}`;
   }
 
-  function getCookie(name){
-    try{
-      const parts = ('; ' + document.cookie).split('; ' + name + '=');
-      if (parts.length === 2) return decodeURIComponent(parts.pop().split(';').shift() || '');
-      return '';
-    }catch(e){ return ''; }
-  }
+  function getCookie(name){ const m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([$?*|{}\\]\\/\\+^])/g, '\\$1') + '=([^;]*)')); return m ? decodeURIComponent(m[1]) : ''; }
   function getFbc(){ const fbc = getCookie('_fbc'); if (fbc) return fbc; const fbclid = new URLSearchParams(location.search).get('fbclid'); if (!fbclid) return ''; return `fb.1.${Math.floor(Date.now()/1000)}.${fbclid}`; }
   function readMetaIds(){ return { fbp: getCookie('_fbp') || '', fbc: getFbc() || '' }; }
 
@@ -396,6 +407,7 @@
     el.appendChild(av); el.appendChild(text); c.appendChild(el); setTimeout(()=>{ el.style.transition='opacity .25s'; el.style.opacity='0'; setTimeout(()=>el.remove(), 260); }, 5200);
   }
   function scheduleFakeToast(){ const s = SHADES[Math.floor(Math.random()*SHADES.length)]; showSaleToast({ name: NAMES[Math.floor(Math.random()*NAMES.length)], shade:s.label, price:PRODUCT.price, province: PROVINCES[Math.floor(Math.random()*PROVINCES.length)] }); setTimeout(scheduleFakeToast, 18000 + Math.floor(Math.random()*13000)); }
+
 
   // ✅ expose functions for inline onclick fallback
   window.openModal = openModal;
