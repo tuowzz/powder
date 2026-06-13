@@ -179,7 +179,7 @@
     </section>
   </div>
 
-  <div class="sticky"><a href="https://lin.ee/rn69fie" target="_blank" class="btn-line" id="btnLineBottom"><i class="fa-brands fa-line"></i> แอดไลน์รับโปร</a><button class="btn-buy" id="btnBuy">สั่งซื้อ 399</button></div>
+  <div class="sticky"><a href="https://lin.ee/rn69fie" target="_blank" class="btn-line" id="btnLineBottom"><i class="fa-brands fa-line"></i> แอดไลน์รับโปร</a><button class="btn-buy" id="btnBuy" onclick="openModal()">สั่งซื้อคลิกที่นี่</button></div>
 
   <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-hidden="true"></div>
   <div class="modal" id="modal" style="display:none">
@@ -293,7 +293,7 @@
     $('#priceWas').textContent = money(PRODUCT.compareAt);
     $('#offBadge').textContent = '-' + off + '%';
     $('#mPrice').textContent = money(PRODUCT.price);
-    $('#btnBuy').textContent = 'สั่งซื้อ ' + PRODUCT.price;
+    $('#btnBuy').textContent = 'สั่งซื้อคลิกที่นี่';
     $('#submitBtn').textContent = 'ยืนยันสั่งซื้อ ' + money(PRODUCT.price);
 
     const productStr = `${PRODUCT.name} - ${selectedShade.label} | ${money(PRODUCT.price)} | Qty ${PRODUCT.qty}`;
@@ -375,11 +375,17 @@
   }
   function scheduleFakeToast(){ const s = SHADES[Math.floor(Math.random()*SHADES.length)]; showSaleToast({ name: NAMES[Math.floor(Math.random()*NAMES.length)], shade:s.label, price:PRODUCT.price, province: PROVINCES[Math.floor(Math.random()*PROVINCES.length)] }); setTimeout(scheduleFakeToast, 18000 + Math.floor(Math.random()*13000)); }
 
+  // ✅ ของเดิมยังอยู่: bind ปุ่มตามระบบเดิม
   document.getElementById('btnBuy').addEventListener('click', openModal);
   document.getElementById('x').addEventListener('click', closeModal);
   document.getElementById('overlay').addEventListener('click', closeModal);
   document.getElementById('btnLineTop').addEventListener('click', trackLine);
   document.getElementById('btnLineBottom').addEventListener('click', trackLine);
+
+  // ✅ เติมใหม่: กันปุ่มโดนเขียนราคากลับ และให้ปุ่มเปิดฟอร์มได้แน่นอน
+  document.getElementById('btnBuy').textContent = 'สั่งซื้อคลิกที่นี่';
+  document.getElementById('btnBuy').setAttribute('onclick', 'openModal()');
+
   renderShadeButtons(); setTimeout(scheduleFakeToast, 4500);
 </script>
 </body>
