@@ -179,7 +179,7 @@
     </section>
   </div>
 
-  <div class="sticky"><a href="https://lin.ee/rn69fie" target="_blank" class="btn-line" id="btnLineBottom"><i class="fa-brands fa-line"></i> แอดไลน์รับโปร</a><button class="btn-buy" id="btnBuy" onclick="openModal()">สั่งซื้อคลิกที่นี่</button></div>
+  <div class="sticky"><a href="https://lin.ee/rn69fie" target="_blank" class="btn-line" id="btnLineBottom"><i class="fa-brands fa-line"></i> แอดไลน์รับโปร</a><button class="btn-buy" id="btnBuy" onclick="openModal(); return false;">สั่งซื้อคลิกที่นี่</button></div>
 
   <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-hidden="true"></div>
   <div class="modal" id="modal" style="display:none">
@@ -311,14 +311,30 @@
   }
 
   function openModal(){
-    $('#overlay').style.display='block'; $('#modal').style.display='block'; syncOrderFields();
+    const overlay = document.getElementById('overlay');
+    const modal = document.getElementById('modal');
+    if (overlay) overlay.style.display = 'block';
+    if (modal) {
+      modal.style.display = 'block';
+      modal.setAttribute('aria-hidden', 'false');
+    }
+    syncOrderFields();
+
     const evId = 'IC-' + Date.now();
     if (window.fbq) fbq('track','InitiateCheckout',{value:PRODUCT.price,currency:'THB',content_name:PRODUCT.name},{eventID: evId});
     if (window.ttq) ttq.track('InitiateCheckout');
     if (window.gtag) gtag('event','begin_checkout',{value:PRODUCT.price,currency:'THB'});
     fireLineEvent('InitiateCheckout', { value: PRODUCT.price, currency: 'THB' });
   }
-  function closeModal(){ $('#overlay').style.display='none'; $('#modal').style.display='none'; }
+  function closeModal(){
+    const overlay = document.getElementById('overlay');
+    const modal = document.getElementById('modal');
+    if (overlay) overlay.style.display = 'none';
+    if (modal) {
+      modal.style.display = 'none';
+      modal.setAttribute('aria-hidden', 'true');
+    }
+  }
   function trackLine(){ if(window.fbq) fbq('track','Contact'); if(window.ttq) ttq.track('Contact'); fireLineEvent('Lead', { value: PRODUCT.price, currency: 'THB' }); }
 
   async function submitOrder(e){
