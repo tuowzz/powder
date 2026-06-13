@@ -263,7 +263,13 @@
     const img = new Image(); img.referrerPolicy = 'no-referrer-when-downgrade'; img.src = `${PROPELLER_CONV_BASE}?${params.toString()}&ts=${Date.now()}`;
   }
 
-  function getCookie(name){ const m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([$?*|{}\\]\\/\\+^])/g, '\\$1') + '=([^;]*)')); return m ? decodeURIComponent(m[1]) : ''; }
+  function getCookie(name){
+    try{
+      const parts = ('; ' + document.cookie).split('; ' + name + '=');
+      if (parts.length === 2) return decodeURIComponent(parts.pop().split(';').shift() || '');
+      return '';
+    }catch(e){ return ''; }
+  }
   function getFbc(){ const fbc = getCookie('_fbc'); if (fbc) return fbc; const fbclid = new URLSearchParams(location.search).get('fbclid'); if (!fbclid) return ''; return `fb.1.${Math.floor(Date.now()/1000)}.${fbclid}`; }
   function readMetaIds(){ return { fbp: getCookie('_fbp') || '', fbc: getFbc() || '' }; }
 
@@ -390,6 +396,11 @@
     el.appendChild(av); el.appendChild(text); c.appendChild(el); setTimeout(()=>{ el.style.transition='opacity .25s'; el.style.opacity='0'; setTimeout(()=>el.remove(), 260); }, 5200);
   }
   function scheduleFakeToast(){ const s = SHADES[Math.floor(Math.random()*SHADES.length)]; showSaleToast({ name: NAMES[Math.floor(Math.random()*NAMES.length)], shade:s.label, price:PRODUCT.price, province: PROVINCES[Math.floor(Math.random()*PROVINCES.length)] }); setTimeout(scheduleFakeToast, 18000 + Math.floor(Math.random()*13000)); }
+
+  // ✅ expose functions for inline onclick fallback
+  window.openModal = openModal;
+  window.closeModal = closeModal;
+  window.submitOrder = submitOrder;
 
   // ✅ ของเดิมยังอยู่: bind ปุ่มตามระบบเดิม
   document.getElementById('btnBuy').addEventListener('click', openModal);
